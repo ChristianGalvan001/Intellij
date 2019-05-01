@@ -1,6 +1,8 @@
 package com.muc;
 
 
+import org.apache.commons.lang3.StringUtils;
+
 import java.io.*;
 import java.net.Socket;
 import java.util.Date;
@@ -31,12 +33,18 @@ public class ServerWorker extends Thread{
        BufferedReader reader = new BufferedReader( new InputStreamReader(inputStream));
        String line;
        while( (line = reader.readLine()) != null) {
-           if ("quit".equalsIgnoreCase(line)){
-               break;
+           String[] tokens = StringUtils.split(line);
+           if(tokens != null && tokens.length > 0){
+               String cmd = tokens[0];
+               if ("quit".equalsIgnoreCase(line)) {
+                   break;
+               } else {
+                String msg = "unknown " + cmd + "\n";
+                outputStream.write(msg.getBytes());
+               }
+               String msg = " You typed: " + line;
+               outputStream.write(msg.getBytes());
            }
-           String msg = " You typed: " + line;
-           outputStream.write(msg.getBytes());
-
        }
         clientSocket.close();
     }
