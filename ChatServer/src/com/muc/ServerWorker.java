@@ -33,6 +33,7 @@ public class ServerWorker extends Thread{
        BufferedReader reader = new BufferedReader( new InputStreamReader(inputStream));
        String line;
        while( (line = reader.readLine()) != null) {
+           // Had to download appache refer to point 1
            String[] tokens = StringUtils.split(line);
            if(tokens != null && tokens.length > 0){
                String cmd = tokens[0];
@@ -50,3 +51,10 @@ public class ServerWorker extends Thread{
     }
 
 }
+
+/** Point 1- go search up StringUtils apache download the first file
+    * extract to file\project structure
+    * add module(the one you extracted)
+    * accept hint
+ **/
+
