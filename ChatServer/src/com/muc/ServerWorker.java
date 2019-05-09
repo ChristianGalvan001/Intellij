@@ -43,7 +43,8 @@ public class ServerWorker extends Thread{
            String[] tokens = StringUtils.split(line);
            if(tokens != null && tokens.length > 0){
                String cmd = tokens[0];
-               if ("quit".equalsIgnoreCase(line)) {
+               if ("logoff".equals(cmd) ||"quit".equalsIgnoreCase(cmd)) {
+                   handlelogoff();
                    break;
                } else if("login".equalsIgnoreCase(cmd)){
                 handleLogin(outputStream, tokens);
@@ -56,34 +57,71 @@ public class ServerWorker extends Thread{
         clientSocket.close();
     }
 
+    private void handlelogoff() throws IOException {
+        List<ServerWorker> workerList = server.getWorkerList();
+        String onlineMsg = "offline: " + login + "\n";
+        for(ServerWorker worker : workerList){
+            if(!login.equals(worker.getLogin())){
+                worker.send(onlineMsg);
+            }
+
+        }
+        clientSocket.close();
+
+
+    }
+
     public String getLogin(){
         return login;
     }
 
     private void handleLogin(OutputStream outputStream, String[] tokens) throws IOException {
-        if (tokens.length == 3){
+        if (tokens.length == 3) {
             String login = tokens[1];
             String password = tokens[2];
 
             if ((login.equals("guest") && password.equals("guest")) || (login.equals("jim") && password.equals("jim"))) {
-                String msg = "ok login";
+                String msg = "ok login" + "\n";
                 outputStream.write(msg.getBytes());
                 this.login = login;
-                System.out.println("User logged in succesfully: " + login);
-            String onlineMsg = "online " + login + "\n";
+                System.out.println("User logged in succesfully: " + login + "\n");
+
+
             List<ServerWorker> workerList = server.getWorkerList();
+
+            //send current user and other lonline logins
+                for(ServerWorker worker : workerList){
+                    //this is going to make null go bye bye
+                    if(!login.equals(worker.getLogin())){
+                        if(worker.getLogin() != null) {
+
+                            String msg2 = "online: " + worker.getLogin() + "\n";
+                            send(msg2);
+                        }
+                    }
+
+                }
+
+                String onlineMsg = "online: " + login + "\n";
+
+                //send other online users current users status
             for(ServerWorker worker : workerList){
-                worker.send(onlineMsg);
+                if(!login.equals(worker.getLogin())) {
+                    worker.send(onlineMsg);
+                }
             }
             } else {
-                String msg = "error login";
+                String msg = "error login" + "\n";
                 outputStream.write(msg.getBytes());
             }
         }
     }
 
     private void send(String msg) throws IOException{
-        outputStream.write(msg.getBytes());
+        if (login != null){
+            outputStream.write(msg.getBytes());
+        }
+
 
     }
 
@@ -96,4 +134,105 @@ public class ServerWorker extends Thread{
     * add module(the one you extracted)
     * accept hint
  **/
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 

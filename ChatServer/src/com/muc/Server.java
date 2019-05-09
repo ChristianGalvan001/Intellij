@@ -4,6 +4,7 @@ import java.io.IOException;
 import java.net.ServerSocket;
 import java.net.Socket;
 import java.util.ArrayList;
+import java.util.List;
 
 public class Server extends Thread{
 
@@ -29,8 +30,9 @@ public class Server extends Thread{
                 while (true) {
                     System.out.println("About to accept client connection...");
                     Socket clientSocket = serverSocket.accept();
-                    System.out.println("Accepted connetion from" + clientSocket);
+                    System.out.println("Accepted connection from" + clientSocket);
                     ServerWorker worker = new ServerWorker( this,clientSocket);
+                    workerList.add(worker);
                     worker.start();
                 }
             } catch (IOException e) {
