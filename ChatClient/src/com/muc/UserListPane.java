@@ -6,6 +6,9 @@ import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.io.IOException;
 
+/**
+ * This class is the Java pane that displays Users and allows you to msg others
+ */
 public class UserListPane extends JPanel implements UserStatusListener {
 
     private final ChatClient client;
@@ -14,7 +17,7 @@ public class UserListPane extends JPanel implements UserStatusListener {
 
     public UserListPane(ChatClient client) {
         this.client = client;
-        this.client.addUserStatusLister(this);
+        this.client.addUserStatusListener(this);
 
         userListModel = new DefaultListModel<>();
         userListUI = new JList<>(userListModel);

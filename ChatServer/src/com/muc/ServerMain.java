@@ -4,7 +4,9 @@ import java.io.IOException;
 import java.net.ServerSocket;
 import java.net.Socket;
 
-
+/**
+ * This creates the necessary port for the MultiUserChatClient
+ */
 public class ServerMain {
     //telnet localhost 8818
     public static void main(String[] args) {

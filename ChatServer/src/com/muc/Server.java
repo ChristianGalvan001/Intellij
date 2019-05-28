@@ -10,40 +10,40 @@ public class Server extends Thread{
 
     private final int serverPort;
 
-    private ArrayList<ServerWorker> workerList = new ArrayList<>();
-    private Socket clientSocket;
-
+    private ArrayList<ServerWorker> workerList = new ArrayList();
 
 
     public Server(int serverPort){
-            this.serverPort = serverPort;
-        }
 
-        public ArrayList<ServerWorker> getWorkerList(){
+        this.serverPort = serverPort;
+    }
+
+    public List<ServerWorker> getWorkerList() {
+
         return workerList;
     }
 
-        @Override
-        public void run(){
-            try {
-                ServerSocket serverSocket = new ServerSocket(serverPort);
-                while (true) {
-                    System.out.println("About to accept client connection...");
-                    Socket clientSocket = serverSocket.accept();
-                    System.out.println("Accepted connection from" + clientSocket);
-                    ServerWorker worker = new ServerWorker( this,clientSocket);
-                    workerList.add(worker);
-                    worker.start();
-                }
-            } catch (IOException e) {
-                e.printStackTrace();
 
+    public void run(){
+        try {
+
+            ServerSocket serverSocket = new ServerSocket(serverPort);
+            while (true) {
+                System.out.println("Accepting Connection...");
+                Socket clientSocket = serverSocket.accept();
+                System.out.println("Accepted connection from" + clientSocket);
+                ServerWorker worker = new ServerWorker( this, clientSocket);
+                workerList.add(worker);
+                worker.start();
 
             }
+        } catch (IOException e) {
+            e.printStackTrace();
         }
+    }
 
-    public void removeWorker(ServerWorker serverWorker) {
+
+    public void removeworker(ServerWorker serverWorker) {
         workerList.remove(serverWorker);
-
     }
 }
